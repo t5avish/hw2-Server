@@ -5,7 +5,7 @@ import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if neede
 const cors = initMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
-    origin: '*',
+    origin: 'https://hw2-ten.vercel.app/',
   })
 );
 
@@ -21,11 +21,11 @@ export default async function handler(req, res) {
       res.status(200).json({ userId: result.insertedId });
     } catch (error) {
       console.error('Error during user creation:', error);
-      res.status(500).json({ error: 'Internal Server Error OMER' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   } else {
     // Handles methods that are not allowed
     res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed KFIR`);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
