@@ -5,7 +5,7 @@ import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if neede
 const cors = initMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
-    origin: '*',
+    origin: '*', 
   })
 );
 
@@ -16,7 +16,18 @@ export default async function handler(req, res) {
     try {
       const db = await connectToDatabase();
       const usersCollection = db.collection('users');
-      const { firstName, lastName, email, password, age, weight, height, gender } = req.body;
+      let { firstName, lastName, email, password, age, weight, height, gender } = req.body;
+
+      // Convert email to lowercase for case-insensitive comparison
+      email = email.toLowerCase();
+
+      // Check if email already exists in the database
+      const existingUser = await usersCollection.findOne({ email });
+      if (existingUser) {
+        res.status(409).json({ message: 'Email already exists' });
+        return;
+      }
+
       const result = await usersCollection.insertOne({ firstName, lastName, email, password, age, weight, height, gender });
       res.status(200).json({ userId: result.insertedId });
     } catch (error) {
