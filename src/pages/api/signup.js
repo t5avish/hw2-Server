@@ -5,7 +5,7 @@ import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if neede
 const cors = initMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
-    origin: 'https://hw2-ten.vercel.app/',
+    origin: '*',
   })
 );
 
