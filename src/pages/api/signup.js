@@ -1,6 +1,7 @@
 import Cors from 'cors';
 import initMiddleware from '../../lib/init-middleware';  // Adjust path if needed
 import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if needed
+import bcrypt from 'bcryptjs';
 
 const cors = initMiddleware(
   Cors({
@@ -27,7 +28,6 @@ export default async function handler(req, res) {
         res.status(409).json({ message: 'Email already exists' });
         return;
       }
-
       const result = await usersCollection.insertOne({ firstName, lastName, email, password, age, weight, height, gender });
       res.status(200).json({ userId: result.insertedId });
     } catch (error) {
@@ -35,7 +35,6 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   } else {
-    // Handles methods that are not allowed
     res.setHeader('Allow', ['POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
