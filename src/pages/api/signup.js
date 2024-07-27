@@ -1,6 +1,6 @@
 import Cors from 'cors';
-import initMiddleware from '../../lib/init-middleware';  // Adjust path if needed
-import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if needed
+import initMiddleware from '../../lib/init-middleware';
+import { connectToDatabase } from '../../lib/mongodb'; 
 import { URL } from '../../../settings'
 
 const cors = initMiddleware(
