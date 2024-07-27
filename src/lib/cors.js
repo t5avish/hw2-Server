@@ -4,7 +4,7 @@ import { URL } from '../../settings'
 // Initialize CORS middleware
 const cors = Cors({
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  origin: "*", // Replace with your frontend URL
+  origin: URL, // Replace with your frontend URL
 });
 
 export default cors;
