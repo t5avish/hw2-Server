@@ -1,5 +1,5 @@
 import Cors from 'cors';
-import { URL } from '../../../settings'
+import { URL } from '../../settings'
 
 // Initialize CORS middleware
 const cors = Cors({
