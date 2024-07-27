@@ -1,12 +1,13 @@
 import { connectToDatabase } from '../../lib/mongodb';
 import Cors from 'cors';
 import initMiddleware from '../../lib/init-middleware';
+import { URL } from '../../../settings'
 
 // Initialize CORS middleware
 const cors = initMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
-    origin: 'http://localhost:3001', // Ensure this matches your frontend URL
+    origin: URL, // Ensure this matches your frontend URL
     credentials: true,
   })
 );

@@ -3,16 +3,18 @@ import jwt from 'jsonwebtoken';
 import Cors from 'cors';
 import initMiddleware from '../../lib/init-middleware';
 import { ObjectId } from 'mongodb';
+import { URL } from '../../../settings'
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const cors = initMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
-    origin: 'http://localhost:3001',
+    origin: URL,
     credentials: true,
   })
 );
+
 
 export default async function handler(req, res) {
   await cors(req, res);
