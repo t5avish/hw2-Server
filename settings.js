@@ -1,1 +1,1 @@
-export const URL = "http://localhost:3001"
+export const URL = "https://hw2-ten.vercel.app"
