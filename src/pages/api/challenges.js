@@ -12,28 +12,42 @@ const cors = initMiddleware(
 );
 
 export default async function handler(req, res) {
-  console.log('Handler called'); // Debug: Check if the handler is reached
 
   await cors(req, res);
-  console.log('CORS applied'); // Debug: Check if CORS middleware is applied
 
-  if (req.method !== 'GET') {
-    console.log('Invalid method:', req.method); // Debug: Log method type
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
+  if (req.method === 'GET') {
 
-  try {
-    console.log('Connecting to database'); // Debug: Before connecting to the database
-    const db = await connectToDatabase();
-    console.log('Database connected'); // Debug: After successful connection
+    try {
+      const db = await connectToDatabase();
 
-    console.log('Fetching challenges'); // Debug: Before fetching challenges
-    const challenges = await db.collection('challenges').find({}).toArray();
-    console.log('Challenges fetched:', challenges); // Debug: Log fetched challenges
+      const challenges = await db.collection('challenges').find({}).toArray();
 
-    res.status(200).json(challenges);
-  } catch (error) {
-    console.error('Failed to fetch challenges:', error); // Debug: Log error details
-    res.status(500).json({ message: 'Internal Server Error' });
+      res.status(200).json(challenges);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  } else if (req.method === 'POST') {
+
+    try {
+      const { title, description } = req.body;
+
+      if (!title || !description) {
+        return res.status(400).json({ message: 'Title and description are required' });
+      }
+
+      const db = await connectToDatabase();
+
+      const result = await db.collection('challenges').insertOne({ title, description });
+
+      // Fix for newer MongoDB drivers: result.ops might not be available
+      const newChallenge = result.insertedId ? { _id: result.insertedId, title, description } : null;
+
+      res.status(201).json(newChallenge);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  } else {
+    res.setHeader('Allow', ['GET', 'POST']);
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
