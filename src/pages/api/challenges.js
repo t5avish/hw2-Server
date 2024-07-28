@@ -1,20 +1,10 @@
 import { connectToDatabase } from '../../lib/mongodb';
-import Cors from 'cors';
+import cors from '../../lib/cors';
 import initMiddleware from '../../lib/init-middleware';
-import { URL } from '../../../settings'
-
-// Initialize CORS middleware
-const cors = initMiddleware(
-  Cors({
-    methods: ['GET', 'POST', 'OPTIONS'],
-    origin: URL, // Ensure this matches your frontend URL
-    credentials: true,
-  })
-);
 
 export default async function handler(req, res) {
 
-  await cors(req, res);
+  await new Promise((resolve, reject) => cors(req, res, (result) => (result instanceof Error ? reject(result) : resolve())));
 
   if (req.method === 'GET') {
 
