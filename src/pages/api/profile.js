@@ -1,20 +1,11 @@
 import { connectToDatabase } from '../../lib/mongodb';
 import jwt from 'jsonwebtoken';
-import Cors from 'cors';
+import cors from '../../lib/cors';
 import initMiddleware from '../../lib/init-middleware';
 import { ObjectId } from 'mongodb';
 import { URL } from '../../../settings'
 
 const JWT_SECRET = process.env.JWT_SECRET;
-
-const cors = initMiddleware(
-  Cors({
-    methods: ['GET', 'POST', 'OPTIONS'],
-    origin: URL,
-    credentials: true,
-  })
-);
-
 
 export default async function handler(req, res) {
   await new Promise((resolve, reject) => cors(req, res, (result) => (result instanceof Error ? reject(result) : resolve())));
