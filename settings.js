@@ -1,1 +1,1 @@
-export const URL = "../api/"
+export const URL = "https://hw2-ten.vercel.app"
