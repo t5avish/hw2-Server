@@ -17,7 +17,7 @@ const cors = initMiddleware(
 
 
 export default async function handler(req, res) {
-  await cors(req, res);
+  await new Promise((resolve, reject) => cors(req, res, (result) => (result instanceof Error ? reject(result) : resolve())));
 
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
