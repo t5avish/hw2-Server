@@ -1,17 +1,11 @@
-import Cors from 'cors';
+
 import initMiddleware from '../../lib/init-middleware';  // Adjust path if needed
 import { connectToDatabase } from '../../lib/mongodb';   // Adjust path if needed
 import { URL } from '../../../settings'
-
-const cors = initMiddleware(
-  Cors({
-    methods: ['GET', 'POST', 'OPTIONS'],
-    origin: URL, 
-  })
-);
+import cors from '../../lib/cors';
 
 export default async function handler(req, res) {
-  await cors(req, res);
+  await new Promise((resolve, reject) => cors(req, res, (result) => (result instanceof Error ? reject(result) : resolve())));
 
   if (req.method === 'POST') {
     try {
